@@ -24,4 +24,7 @@ class LoadFactOperator(BaseOperator):
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         self.log.info(f"Loading data into {self.table_name} fact table")
         redshift.run(f"INSERT INTO {self.table_name} {self.load_sql}")
+        if self.append_only:
+            self.log.info(f"Appending data into {self.table_name} fact table")
+            redshift.run(f"INSERT INTO {self.table_name} {self.load_sql}")
 
